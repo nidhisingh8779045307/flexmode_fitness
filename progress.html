@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Progress{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<h1 class="page-title">Your Progress</h1>
+
+<div class="progress-grid">
+
+{% for d in days %}
+
+<div class="day-box {{ d.status }}">
+
+{% if d.status == "completed" %}
+
+<a href="/day/{{ d.day }}" class="day-link">
+<div class="day-content">
+<span class="icon">✔</span>
+<span>Day {{ d.day }}</span>
+</div>
+</a>
+
+{% elif d.status == "available" %}
+
+<a href="/day/{{ d.day }}" class="day-link">
+<div class="day-content">
+<span class="icon">▶</span>
+<span>Day {{ d.day }}</span>
+</div>
+</a>
+
+{% else %}
+
+<div class="day-content">
+<span class="icon">🔒</span>
+<span>Day {{ d.day }}</span>
+</div>
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

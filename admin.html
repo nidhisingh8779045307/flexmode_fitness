@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - FlexMode{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard container">
+
+<!-- HEADER -->
+<div class="admin-header">
+  <div>
+    <h1>Admin Dashboard</h1>
+    <p>Platform insights • Users • Activity • {{ today_date }}</p>
+  </div>
+
+  <button onclick="window.location.reload()" class="btn btn-outline">
+    Refresh
+  </button>
+</div>
+
+
+<!-- STATS -->
+<div class="stats-grid">
+
+  <div class="stat-card">
+    <div class="stat-icon">👥</div>
+    <h2>{{ total_users }}</h2>
+    <p>Total Users</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">📈</div>
+    <h2>{{ active_users }}</h2>
+    <p>Active Today</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">🏋️</div>
+    <h2>{{ completed_workouts }}</h2>
+    <p>Workouts Completed</p>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">🔥</div>
+    <h2>{{ longest_streak }}</h2>
+    <p>Longest Streak</p>
+  </div>
+
+</div>
+
+
+<!-- MAIN PANELS -->
+<div class="dashboard-panels">
+
+  <!-- Top Days -->
+  <div class="panel">
+
+    <div class="panel-header">
+      <h3>Top Training Days</h3>
+    </div>
+
+    <div class="panel-list">
+
+      {% for day in top_days %}
+      <div class="list-item">
+      <span class="rank">{{ loop.index }}</span>
+
+      <div>
+      <h4>Day {{ day.day }} — {{ day.title }}</h4>
+      <p>{{ day.count }} completions</p>
+      </div>
+
+      <span class="percent">{{ day.percent }}%</span>
+
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+
+  <!-- Recent Users -->
+  <div class="panel">
+
+    <div class="panel-header">
+      <h3>Recent Users</h3>
+    </div>
+    
+    <table class="admin-table">
+
+    <thead>
+    <tr>
+    <th>User</th>
+    <th>Completed Days</th>
+    <th>Current Day</th>
+    <th>Last Workout</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for u in user_progress %}
+    <tr>
+    <td>{{ u.username }}</td>
+    <td>{{ u.completed_days }}</td>
+    <td>Day {{ u.current_day }}</td>
+    <td>{{ u.last_workout or "—" }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+    </table>
+  </div>
+  </div>
+</div>
+
+
+
+
+<!-- QUICK ACTIONS -->
+<div class="quick-actions">
+  <h3>Quick Actions</h3>
+
+  <div class="actions-grid">
+
+    <a href="/admin/add-plan" class="action-card">
+      <span>➕</span>
+      Day Workout Plans
+    </a>
+
+    <a href="/admin/plans" class="action-card">
+      <span>🏋️</span>
+      Manage Workout Plans
+    </a>
+
+    <a href="/admin/users" class="action-card">
+      <span>👤</span>
+      Manage Users
+    </a>
+
+  </div>
+
+</div>
+</div>
+
+{% endblock %}

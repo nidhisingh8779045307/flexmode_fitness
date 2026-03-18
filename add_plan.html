@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Add Workout Plan{% endblock %}
+
+{% block content %}
+
+<div class="container form-page">
+
+<h1>Add Workout Plan</h1>
+
+<form method="POST" class="plan-form">
+
+<div class="form-group">
+<label>Day Number</label>
+<input type="number" name="day" required>
+</div>
+
+<div class="form-group">
+<label>Workout Title</label>
+<input type="text" name="title" required>
+</div>
+
+<div class="form-group">
+<label>Workout Video URL</label>
+<input type="text" name="video_url">
+</div>
+
+<div class="form-group">
+<label>Meal Image URL</label>
+<input type="text" name="meal_image">
+</div>
+
+<h3>Meal Plan</h3>
+
+<h4>Vegetarian Meal Plan</h4>
+
+<input type="text" name="veg_breakfast" placeholder="Veg Breakfast">
+<input type="text" name="veg_lunch" placeholder="Veg Lunch">
+<input type="text" name="veg_snack" placeholder="Veg Snack">
+<input type="text" name="veg_dinner" placeholder="Veg Dinner">
+
+<h4>Non-Vegetarian Meal Plan</h4>
+
+<input type="text" name="nonveg_breakfast" placeholder="Non Veg Breakfast">
+<input type="text" name="nonveg_lunch" placeholder="Non Veg Lunch">
+<input type="text" name="nonveg_snack" placeholder="Non Veg Snack">
+<input type="text" name="nonveg_dinner" placeholder="Non Veg Dinner">
+
+<div class="form-group">
+<label>Exercises</label>
+<textarea name="exercises" rows="5"></textarea>
+</div>
+
+<button type="submit" class="btn btn-primary">
+Save Workout Plan
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

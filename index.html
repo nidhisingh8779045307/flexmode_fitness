@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}FlexMode - Home{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="container">
+    
+    <h2>Transform Your Body at Home</h2>
+    <p>
+      Join thousands who are getting stronger, fitter, and healthier —
+      no gym required.
+    </p>
+
+    <div class="hero-buttons">
+
+      {% if not session.get('user_id') %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary">
+          Start Your Journey
+        </a>
+
+        <a href="#diet" class="btn btn-outline">
+          Explore Plans
+        </a>
+      {% else %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+          Go to Dashboard
+        </a>
+
+        <a href="#videos" class="btn btn-outline">
+          Watch Exercises
+        </a>
+      {% endif %}
+
+    </div>
+
+  </div>
+</section>
+
+<section id="diet" class="section home-nutrition">
+  <div class="container">
+    <h3>Nutrition Made Simple</h3>
+    <div class="diet-grid">
+      <div class="diet-card">
+        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800" alt="Vegetarian">
+        <h4>Vegetarian Plans</h4>
+      </div>
+      <div class="diet-card">
+        <img src="https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=800" alt="Non-Vegetarian">
+        <h4>High-Protein Plans</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="exercises" class="section">
+  <div class="container">
+    <h3>Home Workout Programs</h3><div class="diet-grid">
+
+  <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('register') }}" class="card-link">
+    <div class="diet-card">
+      <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800">
+      <h4>Beginner Workout</h4>
+    </div>
+  </a>
+
+  <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('register') }}" class="card-link">
+    <div class="diet-card">
+      <img src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?w=800">
+      <h4>30 Day Challenge</h4>
+    </div>
+  </a>
+
+</div>
+
+  </div>
+</section>
+<!-- ─── Beginner Demo Videos Section ─────────────────────────────────────── -->
+<section id="videos" class="section video-section">
+  <div class="container">
+    <h3>Start with These Beginner Exercises</h3>
+    <p class="section-subtitle">Simple, effective movements — perfect for your first week.</p>
+
+    <div class="video-grid">
+
+      <!-- Video 1 -->
+      <div class="video-card">
+        <h4>1. Bodyweight Squats</h4>
+        <video controls preload="metadata" poster="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?auto=format&fit=crop&w=800&q=80">
+          <source src="{{ url_for('static', filename='videos/demo1.mp4') }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <p>3 sets × 12–15 reps • Keep knees behind toes, back straight</p>
+        <a href="{{ url_for('register') if not session.get('user_id') else url_for('dashboard') }}" 
+           class="btn btn-primary video-cta">
+          {% if session.get('user_id') %}Continue Journey{% else %}Start Free & Get Full Plan{% endif %}
+        </a>
+      </div>
+
+      <!-- Video 2 -->
+      <div class="video-card">
+        <h4>2. Knee Push-Ups</h4>
+        <video controls preload="metadata" poster="https://images.unsplash.com/photo-1599058917212-d750089bc07e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
+          <source src="{{ url_for('static', filename='videos/demo2.mp4') }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <p>3 sets × 8–12 reps • Core tight, lower chest close to floor</p>
+        <a href="{{ url_for('register') if not session.get('user_id') else url_for('dashboard') }}" 
+           class="btn btn-primary video-cta">
+          {% if session.get('user_id') %}Continue Journey{% else %}Start Free & Get Full Plan{% endif %}
+        </a>
+      </div>
+
+    </div>
+</div>
+  
+    </section>
+
+     <section id="about" class="section home-quick-access home-about">
+  <div class="container">
+
+    <h3>About Us</h3>
+
+    <div class="cards-grid">
+
+      <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('register') }}" class="card-link">
+        <div class="card">
+          <span class="card-icon">📅</span>
+          <h4>View Full 30-Day Plan</h4>
+          <p>Browse all days and preview workouts & meals</p>
+        </div>
+      </a>
+
+      <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('register') }}" class="card-link">
+        <div class="card">
+          <span class="card-icon">📊</span>
+          <h4>Progress & Stats</h4>
+          <p>Coming soon — track weight, measurements, photos</p>
+        </div>
+      </a>
+
+      <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('register') }}" class="card-link">
+        <div class="card">
+          <span class="card-icon">🍽️</span>
+          <h4>Nutrition Library</h4>
+          <p>Meal ideas, grocery lists, macro calculator (soon)</p>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Motivation -->
+    <div class="motivation">
+      <blockquote>
+        “The only bad workout is the one that didn’t happen.”  
+        <cite>— Keep showing up, you've got this!</cite>
+      </blockquote>
+    </div>
+
+    <div class="more-cta">
+      <p>These are just the beginning — get your full 30-day plan today!</p>
+
+      <a href="{{ url_for('register') if not session.get('user_id') else url_for('dashboard') }}" class="btn btn-primary btn-large">
+        Start all Free Today
+      </a>
+
+      {% if not session.get('user_id') %}
+        <p class="small">
+          Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+        </p>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+
+{% endblock %}

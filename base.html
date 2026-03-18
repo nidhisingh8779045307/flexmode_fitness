@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="FlexMode - Home workout and fitness tracking system">
+  <title>{% block title %}FlexMode - Home Workout{% endblock %}</title>
+
+  <!--
+    FIX 1: Load saved theme BEFORE CSS to prevent flash of wrong theme.
+    This tiny inline script runs instantly — no FOUC, no shape glitch.
+  -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Touch-friendly minimums */
+    .btn { min-height: 44px; }
+
+    /*
+      FIX 2: Preserve border-radius on all circular/rounded elements in dark mode.
+      The * transition was overriding border-radius during theme switch.
+    */
+
+    /* .rank,
+    .avatar,
+    #back-to-top {
+      border-radius: 50% !important;
+    }
+
+    .stat-card,
+    .card,
+    .panel,
+    .day-box,
+    .action-card,
+    .mobile-menu,
+    .btn,
+    .btn-primary,
+    .btn-outline,
+    .alert,
+    .form-container,
+    .workout-card,
+    .meal-section,
+    .exercise-section,
+    .plan-preview-card,
+    .diet-card,
+    .video-card,
+    .add-plan-card,
+    .plan-form,
+    .diet-selector,
+    .progress-grid .day-box {
+      border-radius: revert-layer;  
+    } */
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="{% if session.get('is_admin') %}{{ url_for('admin_dashboard') }}
+      {% elif session.get('user_id') %}{{ url_for('dashboard') }}
+      {% else %}{{ url_for('index') }}
+      {% endif %}" class="logo">FlexMode</a>
+
+      <nav class="desktop-nav">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle-wrapper">
+          <button class="theme-toggle btn btn-outline" aria-label="Toggle dark mode">🌙</button>
+        </div>
+
+        {% if not session.get('user_id') %}
+          <a href="{{ url_for('index') }}">Home</a>
+          <a href="{{ url_for('index') }}#diet">Diet</a>
+          <a href="{{ url_for('index') }}#exercises">Exercise</a>
+          <a href="{{ url_for('index') }}#videos">Videos</a>
+          <a href="{{ url_for('index') }}#about">About</a>
+          <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+          <a href="{{ url_for('register') }}" class="btn btn-primary">Register</a>
+
+        {% elif session.get('user_id') and not session.get('is_admin') %}
+          <a href="{{ url_for('dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('progress') }}">Progress</a>
+          <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+
+        {% elif session.get('is_admin') %}
+          <a href="{{ url_for('dashboard') }}">User Dashboard</a>
+          <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+          <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        {% endif %}
+      </nav>
+
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" role="dialog" aria-label="Navigation menu">
+    <button class="close-menu" aria-label="Close menu">×</button>
+    <div class="theme-toggle-wrapper" style="margin-bottom:1rem;">
+      <button class="theme-toggle btn btn-outline" aria-label="Toggle dark mode">🌙</button>
+    </div>
+
+    {% if not session.get('user_id') %}
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('index') }}#diet">Diet</a>
+      <a href="{{ url_for('index') }}#exercises">Exercise</a>
+      <a href="{{ url_for('index') }}#videos">Videos</a>
+      <a href="{{ url_for('index') }}#about">About</a>
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('register') }}">Register</a>
+
+    {% elif session.get('user_id') and not session.get('is_admin') %}
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('progress') }}">Progress</a>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+
+    {% elif session.get('is_admin') %}
+      <a href="{{ url_for('dashboard') }}">User Dashboard</a>
+      <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+    {% endif %}
+  </div>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container alerts">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block content %}{% endblock %}
+
+    <!-- Back to Top -->
+    <button id="back-to-top" title="Back to Top" aria-label="Back to top">↑</button>
+  </main>
+
+  <footer>
+    <p>© 2026 FlexMode - Your Home Fitness Journey</p>
+  </footer>
+
+  <!--
+    FIX 3: All JS moved to bottom of body — runs after DOM is ready,
+    no need for DOMContentLoaded wrappers on most handlers.
+  -->
+  <script>
+    // ── Dark Mode Toggle ───────────────────────────────────────────────
+    const toggleButtons = document.querySelectorAll('.theme-toggle');
+    const html = document.documentElement;
+
+    function updateToggleLabel() {
+      const isDark = html.classList.contains('dark');
+      toggleButtons.forEach(btn => {
+        btn.textContent = isDark ? '☀️' : '🌙';
+        btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      });
+    }
+
+    toggleButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        updateToggleLabel();
+      });
+    });
+
+    // Sync label with current theme (theme was already applied in <head>)
+    updateToggleLabel();
+
+    // ── Mobile Menu ────────────────────────────────────────────────────
+    const hamburger  = document.querySelector('.hamburger');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const closeBtn   = document.querySelector('.close-menu');
+
+    function openMenu() {
+      mobileMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      hamburger.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu() {
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+    hamburger?.addEventListener('click', openMenu);
+    closeBtn?.addEventListener('click', closeMenu);
+
+    // Close on overlay click
+    mobileMenu?.addEventListener('click', e => {
+      if (e.target === mobileMenu) closeMenu();
+    });
+
+    // Close when a link is tapped
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileMenu?.classList.contains('active')) closeMenu();
+    });
+
+    // ── Back to Top ────────────────────────────────────────────────────
+    const backToTop = document.getElementById('back-to-top');
+
+    window.addEventListener('scroll', () => {
+      const scrolled   = window.scrollY;
+      const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+      backToTop.classList.toggle('show', scrolled > docHeight * 0.4);
+    }, { passive: true });
+
+    backToTop?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Smooth Anchor Scroll (respects sticky header) ──────────────────
+    const header = document.querySelector('header');
+
+    document.addEventListener('click', e => {
+      const anchor = e.target.closest('a[href^="#"]:not([href="#"])');
+      if (!anchor) return;
+
+      const targetId = anchor.getAttribute('href').slice(1);
+      const target   = document.getElementById(targetId);
+      if (!target) return;
+
+      e.preventDefault();
+
+      const headerOffset   = header ? header.offsetHeight : 0;
+      const elementTop     = target.getBoundingClientRect().top + window.pageYOffset;
+      const scrollTo       = elementTop - headerOffset - 10;
+
+      window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

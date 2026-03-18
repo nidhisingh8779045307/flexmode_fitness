@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Plan{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<h1>Edit Workout Plan - Day {{ plan.day }}</h1>
+
+<form method="POST">
+
+<label>Title</label>
+<input type="text" name="title" value="{{ plan.title }}">
+
+<label>Video URL</label>
+<input type="text" name="video_url" value="{{ plan.video_url }}">
+
+<label>Meal Image</label>
+<input type="text" name="meal_image" value="{{ plan.meal_image }}">
+
+<h3>Veg Meals</h3>
+
+<input type="text" name="veg_breakfast" placeholder="Breakfast" value="{{ plan.veg_breakfast }}">
+<input type="text" name="veg_lunch" placeholder="Lunch" value="{{ plan.veg_lunch }}">
+<input type="text" name="veg_snack" placeholder="Snack" value="{{ plan.veg_snack }}">
+<input type="text" name="veg_dinner" placeholder="Dinner" value="{{ plan.veg_dinner }}">
+
+<h3>Non Veg Meals</h3>
+
+<input type="text" name="nonveg_breakfast" placeholder="Breakfast" value="{{ plan.nonveg_breakfast }}">
+<input type="text" name="nonveg_lunch" placeholder="Lunch" value="{{ plan.nonveg_lunch }}">
+<input type="text" name="nonveg_snack" placeholder="Snack" value="{{ plan.nonveg_snack }}">
+<input type="text" name="nonveg_dinner" placeholder="Dinner" value="{{ plan.nonveg_dinner }}">
+
+<div class="form-group">
+<label>Exercises</label>
+<textarea name="exercises">{{ plan.exercises }}</textarea>
+</div>
+
+<button type="submit" class="btn btn-primary">
+Update Plan
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

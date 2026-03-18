@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Register - FlexMode{% endblock %}
+
+{% block content %}
+
+<div class="container form-container">
+  <h2>Create Your FlexMode Account</h2>
+  <p class="subtitle">Start your fitness journey today — it's free and takes less than a minute.</p>
+
+  <form method="POST" action="{{ url_for('register') }}">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input 
+        type="text" 
+        id="username" 
+        name="username" 
+        placeholder="Choose a username" 
+        autocomplete="username"
+        required 
+        minlength="3" 
+        maxlength="30"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        autocomplete="email"
+        placeholder="you@example.com" 
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        autocomplete="new-password"
+        placeholder="At least 8 characters" 
+        required 
+        minlength="8"
+      >
+    </div>
+
+    <!-- Optional: Add password confirmation field -->
+    
+    <div class="form-group">
+      <label for="confirm_password">Confirm Password</label>
+      <input 
+        type="password" 
+        id="confirm_password" 
+        name="confirm_password" 
+        placeholder="Confirm your password" 
+        required
+      >
+    </div>
+    
+    <small class="form-hint">
+        Use letters, numbers and symbols for a stronger password.
+    </small>
+
+    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+  </form>
+
+  <div class="form-footer">
+    <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
+  </div>
+</div>
+
+{% endblock %}

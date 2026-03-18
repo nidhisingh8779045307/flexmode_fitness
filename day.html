@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Day {{day}}{% endblock %}
+
+{% block content %}
+
+<div class="container day-page">
+
+<h1 class="day-title">Day {{day}} Workout</h1>
+
+<div class="diet-selector">
+<h3>Select Diet</h3>
+
+<form method="get">
+<select name="diet">
+<option value="veg" {% if diet=="veg" %}selected{% endif %}>Vegetarian</option>
+<option value="nonveg" {% if diet=="nonveg" %}selected{% endif %}>Non-Vegetarian</option>
+</select>
+
+<button type="submit" class="btn btn-primary">Show Plan</button>
+</form>
+</div>
+
+<div class="workout-card">
+<h3>{{ workout.title }}</h3>
+<img src="{{ workout.meal_image }}">
+</div>
+
+<div class="meal-section">
+
+{% if diet == "veg" %}
+
+<h2>Veg Meal Plan</h2>
+<p class="meal-item"><b>Breakfast:</b> {{ workout.veg_breakfast }}</p>
+<p class="meal-item"><b>Lunch:</b> {{ workout.veg_lunch }}</p>
+<p class="meal-item"><b>Snack:</b> {{ workout.veg_snack }}</p>
+<p class="meal-item"><b>Dinner:</b> {{ workout.veg_dinner }}</p>
+
+{% elif diet == "nonveg" %}
+
+<h2>Non-Veg Meal Plan</h2>
+<p class="meal-item"><b>Breakfast:</b> {{ workout.nonveg_breakfast }}</p>
+<p class="meal-item"><b>Lunch:</b> {{ workout.nonveg_lunch }}</p>
+<p class="meal-item"><b>Snack:</b> {{ workout.nonveg_snack }}</p>
+<p class="meal-item"><b>Dinner:</b> {{ workout.nonveg_dinner }}</p>
+
+{% endif %}
+
+</div>
+
+<div class="exercise-section">
+<h2>Exercises</h2>
+<p>{{ workout.exercises }}</p>
+</div>
+
+<div class="exercise-section video-section" id="video-section">
+<h2>Workout Demo Video</h2>
+
+<div class="video-wrapper">
+<iframe src="{{ workout.video_url }}" allowfullscreen></iframe>
+</div>
+
+</div>
+
+
+<form method="POST" action="{{ url_for('complete_day', day=day) }}">
+<button type="submit" class="complete-btn">Complete Day</button>
+</form>
+
+</div>
+
+{% endblock %}

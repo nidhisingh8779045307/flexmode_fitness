@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+<h2>Manage Users</h2>
+
+<a href="/admin/export-users" class="btn btn-primary">Export Users</a>
+
+<table style="width:100%; margin-top:20px">
+
+<tr>
+<th>ID</th>
+<th>Username</th>
+<th>Email</th>
+<th>Admin</th>
+<th>Actions</th>
+</tr>
+
+{% for user in users %}
+
+<tr>
+<td>{{user.id}}</td>
+<td>{{user.username}}</td>
+<td>{{user.email}}</td>
+<td>{{user.is_admin}}</td>
+
+<td>
+
+<a href="/admin/promote/{{user.id}}" class="btn btn-outline">Promote</a>
+
+<a href="/admin/reset-password/{{user.id}}" class="btn btn-outline">Reset</a>
+
+<a href="/admin/delete-user/{{user.id}}" class="btn btn-primary">Delete</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

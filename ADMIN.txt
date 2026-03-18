@@ -1,0 +1,36 @@
+
+Add card in user dashboard from admin
+
+Day: 1
+Title: Beginner Full Body
+
+Video:
+https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4
+
+Meal image:
+https://images.unsplash.com/photo-1490645935967-10de6ba17061
+
+Breakfast:
+Oatmeal + banana + peanut butter
+
+Lunch:
+Chicken / Paneer bowl with rice
+
+Snack:
+Greek yogurt + almonds
+
+Dinner:
+Salmon / Lentils + vegetables
+
+Exercises:
+Push-ups – 3x10, Squats – 3x15, Plank – 30 sec
+
+eg
+Day: 1
+Title: Full Body Beginner
+Video: https://www.youtube.com/embed/UoC_O3HzsH0
+Breakfast: Oats + Banana
+Lunch: Rice + Chicken
+Snack: Nuts
+Dinner: Salad + Eggs
+Exercises: Pushups, Squats, Plank

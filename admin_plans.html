@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Workout Plans{% endblock %}
+
+{% block content %}
+
+<div class="container admin-plans">
+
+<h1>Workout Plans</h1>
+
+<a href="{{ url_for('add_plan') }}" class="btn btn-primary">
+Add New Plan
+</a>
+
+<table class="plans-table">
+
+<tr>
+<th>Day</th>
+<th>Title</th>
+<th>Action</th>
+</tr>
+
+{% for plan in plans %}
+
+<tr>
+<td data-label="Day">{{ plan.day }}</td>
+<td data-label="Title">{{ plan.title }}</td>
+<td data-label="Action">
+
+<a href="{{ url_for('day', day_number=plan.day) }}" class="btn-small">
+View
+</a>
+
+<a href="{{ url_for('edit_plan', day=plan.day) }}" class="btn-small edit">
+Edit
+</a>
+
+</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

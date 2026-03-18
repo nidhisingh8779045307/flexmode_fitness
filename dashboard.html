@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - FlexMode{% endblock %}
+
+{% block content %}
+
+<div class="container dashboard-container">
+
+  <!-- Welcome & Quick Stats -->
+  <section class="welcome-section">
+    <div class="welcome-text">
+      <h2>Hello, {{ session.get('username', 'Flexer') }}! 💪</h2>
+      <p>Let's keep the momentum going — you're on Day <strong>{{ current_day }}</strong> of your journey.</p>
+      {% if next_day_unlocked %}
+        <p>Your Day {{ current_day }} workout is ready. Let's go! 🚀</p>
+      {% elif hours_remaining is not none %}
+        <p>Next workout unlocks in <strong>{{ hours_remaining | int }}h</strong>. Rest up! 😴</p>
+      {% endif %}
+    </div>
+
+    <div class="quick-stats">
+      <div class="stat-card">
+        <div class="stat-value">Day {{ current_day }}</div>
+        <div class="stat-label">Current Plan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ completed_days }}/{{ total_days }}</div>
+        <div class="stat-label">Days Completed</div>
+      </div>
+      <div class="stat-card">
+        {% if next_day_unlocked %}
+          <div class="stat-value" style="color:var(--success);">✅</div>
+          <div class="stat-label">Unlocked</div>
+        {% elif hours_remaining is not none %}
+          <div class="stat-value" style="font-size:1.3rem;">⏳ {{ hours_remaining | int }}h</div>
+          <div class="stat-label">Until Unlock</div>
+        {% else %}
+          <div class="stat-value">—</div>
+          <div class="stat-label">Active Streak</div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Today's Workout Card -->
+  <section class="today-plan">
+    <h3>Today's Recommended Plan — Day {{ current_day }}</h3>
+
+    <!-- ── 24h Unlock Logic ── -->
+    <div class="start-day">
+
+      {% if completed_days >= total_days and total_days > 0 %}
+        <!-- All days done -->
+        <h2>🎉 Program Complete!</h2>
+        <p style="margin-bottom:1rem;">You've crushed all {{ total_days }} days. Incredible work!</p>
+
+      {% elif next_day_unlocked %}
+        <!-- Day is unlocked — show workout card + diet buttons -->
+        <h2>🔥 Day {{ current_day }} is Ready!</h2>
+
+        <div class="plan-preview-card" style="margin-top:1.5rem;">
+          <div class="plan-info">
+            <h4>Day {{ current_day }} — {{ ['Full Body Reset', 'Lower Body Strength', 'Upper Body Power', 'Core & Cardio Burn'][(current_day - 1) % 4] }}</h4>
+            <ul class="plan-highlights">
+              <li>Duration: 35–45 minutes</li>
+              <li>Equipment: Bodyweight / Optional dumbbells</li>
+              <li>Focus: Build strength • Improve endurance</li>
+            </ul>
+            <div>
+              <a href="{{ url_for('day', day_number=current_day|default(1)) }}" class="btn btn-primary btn-large">
+                Start Today's Workout
+              </a>
+            </div>
+          </div>
+          <div class="plan-visual">
+            <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80"
+                 alt="Person doing workout"
+                 class="preview-image">
+          </div>
+        </div>
+
+      {% elif hours_remaining is not none %}
+        <!-- Day is locked — show countdown -->
+        <h2>⏳ Day {{ current_day }} is Locked</h2>
+        <p style="margin-bottom:0.5rem;">
+          Great work finishing Day {{ current_day - 1 }}!
+          Your next workout unlocks in
+          <strong>
+            {% if hours_remaining >= 1 %}
+              {{ hours_remaining | int }} hour{{ 's' if hours_remaining | int != 1 else '' }}
+            {% else %}
+              less than an hour
+            {% endif %}
+          </strong>.
+        </p>
+        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.2rem;">
+          Rest, recover, eat well, and come back stronger 💪
+        </p>
+
+        <!-- Locked preview card -->
+        <div class="plan-preview-card" style="margin-top:1.5rem; opacity:0.6; pointer-events:none;">
+          <div class="plan-info">
+            <h4>Day {{ current_day }} — {{ ['Full Body Reset', 'Lower Body Strength', 'Upper Body Power', 'Core & Cardio Burn'][(current_day - 1) % 4] }}</h4>
+            <ul class="plan-highlights">
+              <li>Duration: 35–45 minutes</li>
+              <li>Equipment: Bodyweight / Optional dumbbells</li>
+              <li>Focus: Build strength • Improve endurance</li>
+            </ul>
+            <button class="btn btn-primary" disabled
+                    style="margin-top:1rem; cursor:not-allowed;">
+              🔒 Unlocks in {{ hours_remaining | int }}h
+            </button>
+          </div>
+          <div class="plan-visual">
+            <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80"
+                 alt="Locked workout"
+                 class="preview-image">
+          </div>
+        </div>
+
+      {% else %}
+        <!-- No workouts added yet -->
+        <h2>No Workout Available</h2>
+        <p>Check back soon — new days are being added.</p>
+      {% endif %}
+
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="dashboard-quick-links">
+    <h3>Your Journey</h3>
+    <div class="cards-grid">
+
+      <a href="{{ url_for('day', day_number=current_day) }}" class="card-link">
+        <div class="card">
+          <span class="card-icon">🏋️</span>
+          <h4>Exercise Plan</h4>
+          <p>View daily workout routine</p>
+        </div>
+      </a>
+
+      <a href="{{ url_for('day', day_number=current_day) }}?diet=veg" class="card-link">
+        <div class="card">
+          <span class="card-icon">🥗</span>
+          <h4>Diet Plan</h4>
+          <p>Veg / Non-Veg daily meals</p>
+        </div>
+      </a>
+
+      <a href="#video-section" class="card-link">
+        <div class="card">
+          <span class="card-icon">🎥</span>
+          <h4>Workout Videos</h4>
+          <p>Watch daily training demo</p>
+        </div>
+      </a>
+
+      <a href="{{ url_for('progress') }}" class="card-link">
+        <div class="card">
+          <span class="card-icon">📊</span>
+          <h4>Progress</h4>
+          <p>Track your fitness journey</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Motivation -->
+  <div class="motivation">
+    <blockquote>
+      "The only bad workout is the one that didn't happen."
+      <cite>— Keep showing up, you've got this!</cite>
+    </blockquote>
+  </div>
+
+</div>
+
+{% endblock %}
