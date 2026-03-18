@@ -1,5 +1,13 @@
 # flexmode_fitness
 FlexMode is a web-based fitness platform designed to help users improve their health and fitness through structured home workout programs and simple nutrition guidance. The platform provides a 30-day fitness plan, beginner-friendly exercise videos, and easy-to-follow diet suggestions so users can achieve their fitness goals without needing a gym.
+
+made with Html, CSS, JavaScript, and Python language.
+* Login/Register
+* The user dashboard can access the day and progress
+* Admin dashboard can see, manage users, add a day plan, and manage.
+* In a day, you can see a video, exercise, and select a veg/non-veg diet.
+* Responsive to mobile. 
+
 <img width="1278" height="625" alt="Screen Shot 2026-03-16 at 9 58 39 AM" src="https://github.com/user-attachments/assets/68281e46-29f0-483e-919b-9ddc8c755ec8" />
 <img width="1278" height="673" alt="Screen Shot 2026-03-16 at 11 40 12 AM" src="https://github.com/user-attachments/assets/cb997e8d-052b-46d9-afd9-cdfd60b54954" />
 <img width="1278" height="673" alt="Screen Shot 2026-03-16 at 11 40 19 AM" src="https://github.com/user-attachments/assets/afa7428e-c724-483c-bebf-8a02935420ab" />
